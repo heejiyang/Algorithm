@@ -53,6 +53,7 @@
             -   트리
                 -   힙
                 -   트라이
+
 ## 1.3 워밍업 문제
 * 활용할 수 있는 기본 개념 코드
 ```js
@@ -66,7 +67,7 @@ Infinity
 (123.45).toFixed(1); // 123.4
 
 const arr = [1, 2, 3, 4, 5];
-const result = arr.reduce((a, c) => a += c);
+const result = arr.reduce((a, c) => (a += c));
 
 // 평평하게 만들기 - flat()
 [1, [2, [3, [4]]]].flat();  // -> [1, 2, [3, [4]]]
@@ -76,17 +77,18 @@ const result = arr.reduce((a, c) => a += c);
 
 // 빈배열 만들기
 Array(10).fill(0);
-[...Array(10)].map((_, i) => i + 1)
+[...Array(10)].map((_, i) => i + 1);
 '.'.repeat(10).split('.'); // 권장하지 않습니다.
 '.'.repeat(9).split('.');
 Array.from('ab'.repeat(10));
 ```
+
 * 활용할 수 있는 커스텀 메서드
 ```js
 const zip = (a, b) => a.map((v, i) => [v, b[i]])
 // v에는 array가 들어가야한다.
 // zip('hello', [10, 20, 30, 40, 50]) // error
-zip([10, 20, 30, 40, 50], 'hello') // 성공
+zip([10, 20, 30, 40, 50], 'hello'); // 성공
 // (2) [10, 'h']
 // (2) [20, 'e']
 // (2) [30, 'l']
@@ -102,6 +104,7 @@ zip([10, 20, 30, 40, 50], 'hello') // 성공
 (※ 예를들어 8808은 3, 8888은 4로 카운팅 해야 함)
 
 문제 링크 : https://codingdojang.com/scode/393
+
 -   풀이
 ```js
 // '123433332121'.match(/1/g)
@@ -110,7 +113,7 @@ zip([10, 20, 30, 40, 50], 'hello') // 성공
 // (2) ['hello', 'hello']
 
 let str = '';
-for (let i=1;i<=10000;i++) {
+for (let i = 1; i <= 10000; i++) {
   str += i;
 }
 console.log(str.match(/8/g).length);
@@ -122,10 +125,10 @@ console.log(str.match(/8/g).length);
 // ['1', '1', '1'].length
 
 let str = "";
-for(let i=1; i<=10000; i++){
+for(let i = 1; i <= 10000; i++){
     str += i;
 }
-console.log(str.split("").filter(item => item==='8').length);
+console.log(str.split("").filter((item) => item === '8').length);
 
 // Array(10)
 // (10) [empty × 10]
@@ -188,15 +191,20 @@ Array(10)
 
 [...Array(10)].map((_, i) => i + 1).filter(item => item === '8')
 
+    Array(10000).fill(1).map((_, i) => i + 1).join("").match(/8/g).length;
+    Array(10000).fill(1).map((_, i) => i + 1).toString().match(/8/g).length;
+    [...Array(10000)].map((_, i) => i + 1).filter(item => item === '8');
+    console.log(answer);
+
 let arr = []
-for(let i = 1;i<=10000;i++){
+for(let i = 1; i <= 10000; i++){
     arr.push(i);
 }
-let result = [...arr.join('')].filter(el=>el==='8').length
+let result = [...arr.join('')].filter(el => el === '8').length
 console.log(result)
 
 // let arr = []
-// for(let i = 1;i<=20;i++){
+// for(let i = 1; i <= 20; i++){
 //     arr.push(i);
 // }
 // let result = [...arr.join('')]
@@ -213,11 +221,6 @@ console.log(result)
 // (8) ['1', '0', '2', '0', '3', '0', '4', '0']
 // [...'hello']
 // (5) ['h', 'e', 'l', 'l', 'o']
-
-Array(10000).fill(1).map((_, i) => i + 1).join("").match(/8/g).length;
-Array(10000).fill(1).map((_, i) => i + 1).toString().match(/8/g).length;
-[...Array(10000)].map((_, i) => i + 1).filter(item => item === '8');
-console.log(answer);
 ```
 
 ### 1.3.2 워밍업 문제(daum)
@@ -229,103 +232,109 @@ console.log(answer);
 문제링크 : https://codingdojang.com/scode/408?orderby=&langby=#answer-filter-area
 
 * 풀이
-    ```js
-    let arr = [1, 3, 4, 8, 13, 17, 20]
-    // 앞 요소나 뒤 요소를 알아야 하기 때문에 for of문은 적절치가 않습니다.
-    for (i of arr){ 
-        console.log(i)
+```js
+let arr = [1, 3, 4, 8, 13, 17, 20];
+// 앞 요소나 뒤 요소를 알아야 하기 때문에 for of문은 적절치가 않습니다.
+for (i of arr){
+    console.log(i);
+}
+
+let arr = [1, 3, 4, 8, 13, 17, 20];
+for (i in arr){
+    console.log(arr[i]);
+}
+
+for(let i = 0; i < arr.length; i++){
+    console.log(arr[i]);
+}
+
+// 마지막이 undefined, undefined - 20 X
+for(let i = 0; i < arr.length; i++){
+    console.log(arr[i]);
+    console.log(arr[i + 1]);
+    console.log('----------');
+}
+
+for(let i = 0; i < arr.length - 1; i++){
+    console.log(arr[i]);
+    console.log(arr[i + 1]);
+    console.log('----------');
+}
+
+for(let i = 0; i < arr.length - 1; i++){
+    console.log(arr[i + 1] - arr[i]);
+}
+
+for(let i = 1; i < arr.length; i++){
+    console.log(arr[i] - arr[i - 1]);
+}
+
+let s = [1, 3, 4, 8, 13, 17, 20];
+let arr = [];
+
+for(let i = 1; i < s.length; i++){
+    arr.push(s[i] - s[i - 1]);
+}
+
+let index = arr.indexOf(Math.min(...arr));
+console.log(s[index], s[index + 1]);
+
+// 기본적인 풀이
+let dots = [1, 3, 4, 8, 13, 17, 20];
+let 최솟값 = Infinity;
+let 최솟값인덱스 = 0;
+
+for (let i = 1; i < dots.length; i++) {
+    if (Math.abs(dots[i] - dots[i - 1]) < 최솟값){
+        최솟값 = Math.abs(dots[i] - dots[i - 1]);
+        최솟값인덱스 = i;
     }
+}
+console.log(dots[최솟값인덱스], dots[최솟값인덱스 - 1]);
+```
 
-    let arr = [1, 3, 4, 8, 13, 17, 20]
-    for (i in arr){
-        console.log(arr[i])
+* 아래와 같은 방식으로 풀이 예정
+```python
+list(zip('hello world', [10, 20, 30, 40, 50]))
+list(zip([1, 3, 4, 8, 13, 17, 20], [3, 4, 8, 13, 17, 20]))
+sorted(zip([1, 3, 4, 8, 13, 17, 20], [3, 4, 8, 13, 17, 20]), key=lambda i:i[1]-i[0])
+sorted(zip([1, 3, 4, 8, 13, 17, 20], [3, 4, 8, 13, 17, 20]), key=lambda i:i[1]-i[0])[0]
+```
+
+```js
+const zip = (a, b) => a.map((v, i) => [v, b[i]]);
+let s = [1, 3, 4, 8, 13, 17, 20];
+
+let pairs = zip(s.slice(0, s.length - 1), s.slice(1));
+
+function 비교(a, b) {
+    if (a[1] - a[0] < b[1] - b[0]) {
+        return - 1;
     }
-
-    for(let i = 0; i < arr.length; i++){
-        console.log(arr[i])
+    if (a[1] - a[0] > b[1] - b[0]) {
+        return 1;
     }
+    return 0;
+}
 
-    // 마지막이 undefined, undefined - 20 X
-    for(let i = 0; i < arr.length; i++){
-        console.log(arr[i])
-        console.log(arr[i+1])
-        console.log('----------')
+pairs.sort(비교);
+pairs.sort(비교)[0];
+```
+```js
+const zip = (a, b) => a.map((v, i) => [v, b[i]]);
+let s = [1, 3, 4, 8, 13, 17, 20];
+
+let pairs = zip(s.slice(0, s.length - 1), s.slice(1));
+let 최솟값 = Infinity;
+let 최솟값쌍 = [];
+
+for ([i, j] of pairs) {
+    if (j - i < 최솟값) {
+        최솟값 = j - i;
+        최솟값쌍 = [i, j];
     }
-
-    for(let i = 0; i < arr.length-1; i++){
-        console.log(arr[i])
-        console.log(arr[i+1])
-        console.log('----------')
-    }
-
-    for(let i = 0; i < arr.length-1; i++){
-        console.log(arr[i+1] - arr[i])
-    }
-
-    for(let i = 1; i < arr.length; i++){
-        console.log(arr[i] - arr[i-1])
-    }
-
-    let s = [1, 3, 4, 8, 13, 17, 20]
-    let arr = []
-
-    for(let i = 1; i < s.length; i++){
-        arr.push(s[i] - s[i-1])
-    }
-
-    let index = arr.indexOf(Math.min(...arr))
-    console.log(s[index], s[index+1])
-
-    // 기본적인 풀이
-    let dots = [1, 3, 4, 8, 13, 17, 20]
-    let 최솟값 = Infinity;
-    let 최솟값인덱스 = 0;
-
-    for (let i = 1; i < dots.length; i++) {
-        if (Math.abs(dots[i] - dots[i - 1]) < 최솟값){
-            최솟값 = Math.abs(dots[i] - dots[i - 1]);
-            최솟값인덱스 = i;
-        }
-    }
-    console.log(dots[최솟값인덱스], dots[최솟값인덱스-1]);
-    ```
-
-    * 아래와 같은 방식으로 풀이 예정
-    ```python
-    list(zip('hello world', [10, 20, 30, 40, 50]))
-    list(zip([1, 3, 4, 8, 13, 17, 20], [3, 4, 8, 13, 17, 20]))
-    sorted(zip([1, 3, 4, 8, 13, 17, 20], [3, 4, 8, 13, 17, 20]), key=lambda i:i[1]-i[0])
-    sorted(zip([1, 3, 4, 8, 13, 17, 20], [3, 4, 8, 13, 17, 20]), key=lambda i:i[1]-i[0])[0]
-    ```
-
-    ```js
-    const zip = (a, b) => a.map((v, i) => [v, b[i]]);
-    let s = [1, 3, 4, 8, 13, 17, 20];
-
-    let pairs = zip(s.slice(0, s.length-1), s.slice(1))
-    let 최솟값 = Infinity;
-    let 최솟값쌍 = [];
-
-    function 비교(a, b) {
-        if (a[1] - a[0] < b[1] - b[0]) {
-            return -1
-        }
-        if (a[1] - a[0] > b[1] - b[0]) {
-            return 1
-        }
-        return 0;
-    }
-
-    pairs.sort(비교)
-    pairs.sort(비교)[0]
-
-    for([i, j] of pairs){
-        if(j - i < 최솟값){
-            최솟값 = j - i;
-            최솟값쌍 = [i, j]
-        }
-    }
-    ```
+}
+```
 
 ## 1.4 기본 자료구조 및 알고리즘
 1. 스택과 큐
@@ -350,8 +359,8 @@ console.log(answer);
     * arr.push : 맨 뒤에 값을 삽입합니다.
     * arr.pop : 맨 뒤에 값을 꺼냅니다.
 
-    ```js
-    class Stack{
+    ```javascript
+    class Stack {
         constructor(){
             this.arr = []; // 연결리스트로 구현할 수도 있지만, 지금 배우지 않았기에 배열로 구현합니다.
             this.length = 0;
@@ -362,30 +371,30 @@ console.log(answer);
         }
         pop(index){
             if(this.length == 0){
-                return
+                return;
             }
-            if(index > this.arr.length -1){
-                return
+            if(index > this.arr.length - 1){
+                return;
             }
-            let result = this.arr.splice(index, 1)
-            this.length -= 1
-            return result
+            let result = this.arr.splice(index, 1);
+            this.length -= 1;
+            return result;
         }
         empty(){
             if(this.length == 0){
-                return 1
+                return 1;
             } else {
-                return 0
+                return 0;
             }
         }
         top(){
-            return this.arr[this.length - 1]
+            return this.arr[this.length - 1];
         }
         bottom(){
-            return this.arr[0]
+            return this.arr[0];
         }
         display(){
-            return this.arr
+            return this.arr;
         }
     }
     let s = new Stack()
@@ -404,8 +413,9 @@ console.log(answer);
 -   개념 : https://en.wikipedia.org/wiki/Linked_list
 -   알고리즘 시각화 : https://visualgo.net/ko
 
-1. step 1 - object로 linkedList 구현
+1. step 1 - object로 linkedlist 구현
 ```js
+// 모두 이해할 수 있는 코드
 const list = {
     head: {
         value: 46,
@@ -415,29 +425,29 @@ const list = {
                 value: 97,
                 next: {
                     value: 12,
-                    next: null
-                }
-            }
-        }
-    }
-}
+                    next: null,
+                },
+            },
+        },
+    },
+};
 // list.head.next.next.value
 // list.head.next.next.next.value
 
 let list = {
-    head: null
-}
+    head: null,
+};
 
-let node1 = {value: 46, next: null}
-let node2 = {value: 49, next: null}
-let node3 = {value: 97, next: null}
-let node4 = {value: 12, next: null}
+let node1 = {value: 46, next: null};
+let node2 = {value: 49, next: null};
+let node3 = {value: 97, next: null};
+let node4 = {value: 12, next: null};
 
-node1.next = node2
-node2.next = node3
-node3.next = node4
+node1.next = node2;
+node2.next = node3;
+node3.next = node4;
 
-list.head = node1
+list.head = node1;
 // let node4 = {value: 12, next: null}
 // let node3 = {value: 97, next: node4}
 // let node2 = {value: 49, next: node3}
@@ -459,53 +469,55 @@ const list = {
                     value: 35,
                     next: {
                         value: 21,
-                        next: null
-                    }
-                }
-            }
-        }
-    }
-}
-list.head.next.next.next.value
+                        next: null,
+                    },
+                },
+            },
+        },
+    },
+};
+list.head.next.next.next.value;
 ```
+
+2. step2 - class로 node 구현
 ```js
 // 위 문제 처럼 만들어 보도록 하겠습니다.
 // head -> [90, next] -> [2, next] -> [77, next] -> [35, next] -> [21, next] -> null
 // 35를 출력해주세요.
 class Node {
     constructor(data){
-        this.data = data
-        this.next = null
+        this.data = data;
+        this.next = null;
     }
 }
-node1 = new Node(90)
-node2 = new Node(2)
-node3 = new Node(77)
-node4 = new Node(35)
-node5 = new Node(21)
+node1 = new Node(90);
+node2 = new Node(2);
+node3 = new Node(77);
+node4 = new Node(35);
+node5 = new Node(21);
 
-node1.next = node2
-node2.next = node3
-node3.next = node4
-node4.next = node5
+node1.next = node2;
+node2.next = node3;
+node3.next = node4;
+node4.next = node5;
 
-node1.data
+node1.data;
 // 90
-node1.next.next.data
+node1.next.next.data;
 // 77
-node1.next.next.next.data
+node1.next.next.next.data;
 // 35
-```
-```js
-linkedList.append(30)
 ```
 
 3. step 3 - class로 linkedList 구현
 ```js
-// head -> ['init', 'next]
-//            |
-//           tail
+// head -> ['init', next]
+//               ↑
+//              tail
 
+// head -> ['init', next] -> [90, next]
+//                               ↑
+//                              tail
 
 // node(1, null)이 들어가서 newnode가 되었다 -> this.tail = init -> this.tail.next = init.next 값은 null인데 null자리를 새로운노드로!
 // this.tail 이제 node(1, null)
@@ -513,223 +525,258 @@ linkedList.append(30)
 // this.tail.next = node(1, null).next값은 null인데 null 자리를 새로운 노드 node(2, null)로
 // node(1, null) = 새로운 노드
 
+// 새로운노드 = node(1, null)
+// init.next 값은 null인데! null자리를 '새로운노드node(1, null)'로!
+// this.tail은 이제 node(1, null)
+//
+// 새로운노드 = node(2, null)
+// node(1, null).next 값은 null인데! null자리를 '새로운노드node(2, null)'로!
+// node(1, null) = 새로운노드node(2, null)
+//
+// 새로운노드 = node(3, null)
+// node(2, null).next값은 null인데! null자리를 '새로운노드node(3, null)'로!
+// node(2, null) = 새로운노드node(3, null)
+
 class Node {
     constructor(data){
-        this.data = data
-        this.next = null
+        this.data = data;
+        this.next = null;
     }
 }
 
 class LinkedList {
     constructor(){
-        let init = new Node('init')
-        this.head = init
-        this.tail = init
+        let init = new Node('init');
+        this.head = init;
+        this.tail = init;
     }
     append(data){
-        let 새로운노드 = new Node(data)
+        let 새로운노드 = new Node(data);
         // 마지막 값(null)은 새로운 노드가 됨
-        this.tail.next = 새로운노드
+        this.tail.next = 새로운노드;
         // 마지막 노드는 새로운 노드가 됨
-        this.tail = 새로운노드
+        this.tail = 새로운노드;
     }
 }
-l = new LinkedList()
-l.append(1)
-l.append(2)
-l.append(3)
-l.append(10)
-l.append(20)
-l.append(30)
+l = new LinkedList();
+l.append(1);
+l.append(2);
+l.append(3);
+l.append(10);
+l.append(20);
+l.append(30);
 
-l.head.data
-'init'
+// l.head.data
+// 'init'
+// l.head.next.data
+// 1
+// l.head.next.next.data
+// 2
+// l.head.next.next.next.data
+// 3
 ```
 
 4. step 4 - class로 linkedList에서 length 구현
 ```js
-// head -> ['init', 'next]
-//            |
-//           tail
+// head -> ['init', next]
+//               ↑
+//              tail
+
+// head -> ['init', next] -> [90, next]
+//                               ↑
+//                              tail
 
 // 여기서 데이터를 추가하면 생성되는 노드마다 데이터 공간이 할당되는 것이라 메모리가 크게 필요하게 됩니다.
 // 노드 안에 데이터 추가하는 것은 주의해야한다.
 class Node {
-    constructor(data){
-        this.data = data
-        this.next = null
+    constructor(data) {
+        this.data = data;
+        this.next = null;
     }
 }
 
 class LinkedList {
     constructor(){
-        let init = new Node('init')
-        this.head = init
-        this.tail = init
-        this.length = 0
+        let init = new Node('init');
+        this.head = init;
+        this.tail = init;
+        this.length = 0;
     }
-    length(){
-        return this.length
-    }
-    append(data){
-        let 새로운노드 = new Node(data)
+    // length(){ //this.length가 덮어 씀
+    //     return this.length;
+    // }
+
+    append(data) {
+        let 새로운노드 = new Node(data);
         // 마지막 값(null)은 새로운 노드가 됨
-        this.tail.next = 새로운노드
+        this.tail.next = 새로운노드;
         // 마지막 노드는 새로운 노드가 됨
-        this.tail = 새로운노드
-        this.length += 1
+        this.tail = 새로운노드;
+        this.length += 1;
     }
 }
-l = new LinkedList()
-l.append(1)
-l.append(2)
-l.append(3)
-l.append(10)
-l.append(20)
-l.append(30)
+l = new LinkedList();
+l.append(1);
+l.append(2);
+l.append(3);
+l.append(10);
+l.append(20);
+l.append(30);
 ```
+
 5. step 5 - class로 linkedList에서 toString 구현
 ```js
 class Node {
-    constructor(data){
-        this.data = data
-        this.next = null
+    constructor(data) {
+        this.data = data;
+        this.next = null;
     }
 }
 
 class LinkedList {
-    constructor(){
-        let init = new Node('init')
-        this.head = init
-        this.tail = init
-        this.length = 0
-        this.displayData = ''
+    constructor() {
+        let init = new Node('init');
+        this.head = init;
+        this.tail = init;
+        this.length = 0;
+        this.displayData = '';
     }
 
-    length(){
-        return this.length
+    // length() { //this.length가 덮어 씀
+    //     return this.length;
+    // }
+
+    toString() {
+        return  '[' + this.displayData.slice(0, -2) + ']';
     }
 
-    toString(){
-        return  '[' + this.displayData.slice(0, -2) + ']'
-    }
-
-    append(data){
-        let 새로운노드 = new Node(data)
+    append(data) {
+        let 새로운노드 = new Node(data);
         // 마지막 값(null)은 새로운 노드가 됨
-        this.tail.next = 새로운노드
+        this.tail.next = 새로운노드;
         // 마지막 노드는 새로운 노드가 됨
-        this.tail = 새로운노드
-        this.length += 1
-        this.displayData += `${data},`
+        this.tail = 새로운노드;
+        this.length += 1;
+        this.displayData += `${data},`;
     }
 }
-l = new LinkedList()
-l.append(1)
-l.append(2)
-l.append(3)
-l.append(10)
-l.append(20)
-l.append(30)
+
+l = new LinkedList();
+l.append(1);
+l.append(2);
+l.append(3);
+l.append(10);
+l.append(20);
+l.append(30);
 ```
+
 6. step 6 - class로 linkedList에서 toArray 구현
 ```js
 class Node {
-    constructor(data){
-        this.data = data
-        this.next = null
+    constructor(data) {
+        this.data = data;
+        this.next = null;
     }
 }
 
 class LinkedList {
-    constructor(){
-        let init = new Node('init')
-        this.head = init
-        this.tail = init
-        this.length = 0
-        this.displayData = ''
+    constructor() {
+        let init = new Node('init');
+        this.head = init;
+        this.tail = init;
+        this.length = 0;
+        this.displayData = '';
+        this.displayDataArr = [];
     }
 
-    length(){
-        return this.length
+    // length() { //this.length가 덮어 씀
+    //     return this.length;
+    // }
+
+    toString() {
+        return  '[' + this.displayData.slice(0, -2) + ']';
     }
 
-    toString(){
-        return  '[' + this.displayData.slice(0, -2) + ']'
+    toArray() {
+        return this.displayDataArr;
     }
 
     append(data){
-        let 새로운노드 = new Node(data)
+        let 새로운노드 = new Node(data);
         // 마지막 값(null)은 새로운 노드가 됨
-        this.tail.next = 새로운노드
+        this.tail.next = 새로운노드;
         // 마지막 노드는 새로운 노드가 됨
-        this.tail = 새로운노드
-        this.length += 1
-        this.displayData += `${data},`
+        this.tail = 새로운노드;
+        this.length += 1;
+        this.displayData += `${data},`;
+        this.displayDataArr.push(data);
     }
 }
-l = new LinkedList()
-l.append(1)
-l.append(2)
-l.append(3)
-l.append(10)
-l.append(20)
-l.append(30)
+
+l = new LinkedList();
+l.append(1);
+l.append(2);
+l.append(3);
+l.append(10);
+l.append(20);
+l.append(30);
 ```
 
-7. step 7 - class로 linkedList에서 toArray 구현
+7. step 7 - (중요!!) toString을 순회로 구현
 ```js
 class Node {
     constructor(data){
-        this.data = data
-        this.next = null
+        this.data = data;
+        this.next = null;
     }
 }
 
 class LinkedList {
-    constructor(){
-        let init = new Node('init')
-        this.head = init
-        this.tail = init
-        this.length = 0
+    constructor() {
+        let init = new Node('init');
+        this.head = init;
+        this.tail = init;
+        this.length = 0;
     }
 
-    length(){
-        return this.length
-    }
+    // length() { //this.length가 덮어 씀
+    //     return this.length;
+    // }
+
     // toString()했을 경우
     // this.head == init
     // 순회용현재노드 == init
     // init노드의 next노드 : node1(1, node2)
     // node1노드의 next노드 : node2(2, node3)
     // '1, 2, '
-    toString(){
-        let 순회용현재노드 = this.head
-        // 처음 순회용 현재 노드가 init이기 때문에
-        순회용현재노드 = 순회용현재노드.next
+    toString() {
+        let 순회용현재노드 = this.head;
 
-        let 출력데이터 = ''
+        // 처음 순회용 현재 노드가 init이기 때문에
+        순회용현재노드 = 순회용현재노드.next;
+
+        let 출력데이터 = '';
         for(let i = 0; i < this.length; i++){
-            출력데이터 += `${순회용현재노드.data}. `
-            순회용현재노드 = 순회용현재노드.next
+            출력데이터 += `${순회용현재노드.data}, `;
+            순회용현재노드 = 순회용현재노드.next;
         }
-        return 출력데이터
+        return 출력데이터;
     }
     append(data){
-        let 새로운노드 = new Node(data)
+        let 새로운노드 = new Node(data);
         // 마지막 값(null)은 새로운 노드가 됨
-        this.tail.next = 새로운노드
+        this.tail.next = 새로운노드;
         // 마지막 노드는 새로운 노드가 됨
-        this.tail = 새로운노드
-        this.length += 1
+        this.tail = 새로운노드;
+        this.length += 1;
     }
 }
 
-l = new LinkedList()
-l.append(1)
-l.append(2)
-l.append(3)
-l.append(10)
-l.append(20)
-l.append(30)
+l = new LinkedList();
+l.append(1);
+l.append(2);
+l.append(3);
+l.append(10);
+l.append(20);
+l.append(30);
 ```
