@@ -980,7 +980,282 @@ l.append(20);
 l.append(30);
 ```
 
-### 1.4.3 트리와 그래프
+### 1.4.3 트리와 그래프(최적의 회를 구해라)
+-   트리
+    -   규칙에 따라 데이터를 넣는다
+    -   어떻게 그 데이터를 꺼낼것인가 -> 트리형태는 훨씬 더 적은 step으로 데이터를 탐색할 수 있다.
+-   그래프 (1,2문제 꼭 나온다. 출제율이 높다!!)
+    -   너비 우선 탐색(BFS) -> 가로방향, 수평방향
+
+    -   깊이 우선 탐색(DFS) - stack -> 세로방향, 수직방향
+        -   current로 들어가면 방문경로로 들어간다.
+        -   왼쪽 / 오른쪽부터 순회할 것이냐에 따라 같은 레벨에 있는 것 순서가 정해진다.
+
+```js
+const tree = {
+    root: {
+        value: 5,
+        left: {
+            value: 3,
+            left: {
+                value: 1,
+                left: null,
+                right: null
+            },
+            right: {
+                value: 4,
+                left: null,
+                right: null
+            }
+        },
+        right: {
+            value: 8,
+            left: {
+                value: 6,
+                left: null,
+                right: null
+            },
+            right: {
+                value: 9,
+                left: null,
+                right: null
+            }
+        }
+    }
+}
+```
+* object나 array(기존 자료형)로 tree나 linked list를 구현할 수 있는는데 왜 class로 구현할까요?
+```js
+[5, [3, [1, [], []], [4, [], []]], [8, [6, [], []], [9, [], []]]]
+```
+1. 더 lite한 모델을 만들기 위해
+2. 확장성(매서드 같은 것을 만들 수 있음)
+3. OOP(Object-Oriented Programming, 객체 지향 프로그래밍)에 철학이 맞기 때문에
+
+* node를 만들어서 삽입하는 방식으로 구현
+```js
+const root = {
+    value: 55,
+    left: null,
+    right: null
+}
+node1= {value: 53, left: null, right: null}
+node2= {value: 99, left: null, right: null}
+node3= {value: 37, left: null, right: null}
+node4= {value: 54, left: null, right: null}
+
+root.left = node1;
+root.right = node2;
+
+node1.left = node3;
+node1.right = node4;
+
+root.root;
+// 55
+root.right.value;
+// 99
+root.left.value;
+// 53
+root.left.left.value;
+// 37
+```
+
+-   tree를 class로 구현하기(이미지: tree만들기\_트리순회\_.png)
+```js
+class Node {
+    constructor(data){
+        this.data = data
+        // this.child= [] // 2진트리가 아닌 트리를 만들때 사용할 수 있습니다.
+        this.left = null
+        this.righ = null
+    }
+}
+
+root = new Node(55);
+Node2 = new Node(53);
+Node3 = new Node(99);
+Node4 = new Node(37);
+Node5 = new Node(54);
+
+root.left = node1;
+root.right = node2;
+
+node1.left = node3;
+node1.right = node4;
+
+root.data
+// 55
+root.left.data
+// 53
+root.left.left.data
+// 37
+root.left.right.data
+// 54
+```
+* 트리구현(완벽한 이진트리가 아닙니다.)
+```js
+class Node {
+    constructor(data){
+        this.data = data
+        // this.child= [] // 2진트리가 아닌 트리를 만들때 사용할 수 있습니다.
+        this.left = null
+        this.righ = null
+    }
+}
+class Tree {
+    constructor(data){
+        let init = new Node(data)
+        this.root = init
+        this.length = 0
+    }
+
+    // length(){ // this.length와 이름이 같아서 작동하지 않는다.
+    //     return this.length
+    // }
+
+    insert(data){
+        let 새로운노드 = new Node(data)
+        let 순회용현재노드 = this.root
+
+        while(순회용현재노드){
+            if(data == 순회용현재노드.data){
+                // 들어온 값이 존재하는 값이면 트리에 값을 추가하지 않습니다.
+                return
+            } else if (data < 순회용현재노드.data){
+                // 들어온 데이터가 작은 경우 왼쪽에 붙여야 합니다!
+                // 해당 데이터 부분이 비어있으면 데이터를 넣고, 비어있지 않으면 계속 타고 내려가야 합니다.
+                if(!순회용현재노드.left){ // 비어있는상태 !null = true
+                    순회용현재노드.left = 새로운노드
+                    this.length += 1
+                    return
+                }
+                순회용현재노드 = 순회용현재노드.left // 하나 insert되면 비교해서 진행된다.
+            } else if (data > 순회용현재노드.data){
+                // 들어온 데이터가 큰 경우 오른쪽에 붙여야 합니다!
+                // 해당 데이터 부분이 비어있으면 데이터를 넣고, 비어있지 않으면 계속 타고 내려가야 합니다.
+                if(!순회용현재노드.right){
+                    순회용현재노드.right = 새로운노드
+                    this.length += 1
+                    return
+                }
+                순회용현재노드 = 순회용현재노드.right
+            }
+        }
+    }
+}
+
+let t = new Tree(5)
+t.insert(3) // else if (data < 순회용현재노드.data) 실행 -> if(!순회용현재노드.left) = null -> if문 실행
+t.insert(8)
+t.insert(1) // if(!순회용현재노드.left)=null 아님 -> 순회용현재노드 = 순회용현재노드.left이 실행 -> while문 반복
+t.insert(4)
+t.insert(6)
+t.insert(9)
+```
+
+* 트리 순회
+```js
+class Node {
+    constructor(data){
+        this.data = data
+        // this.child= [] // 2진트리가 아닌 트리를 만들때 사용할 수 있습니다.
+        this.left = null
+        this.righ = null
+    }
+}
+class Tree {
+    constructor(data){
+        let init = new Node(data)
+        this.root = init
+        this.length = 0
+    }
+
+    // length(){ // this.length와 이름이 같아서 작동하지 않는다.
+    //     return this.length
+    // }
+
+    insert(data){
+        let 새로운노드 = new Node(data)
+        let 순회용현재노드 = this.root
+
+        while(순회용현재노드){
+            if(data == 순회용현재노드.data){
+                // 들어온 값이 존재하는 값이면 트리에 값을 추가하지 않습니다.
+                return
+            } else if (data < 순회용현재노드.data){
+                // 들어온 데이터가 작은 경우 왼쪽에 붙여야 합니다!
+                // 해당 데이터 부분이 비어있으면 데이터를 넣고, 비어있지 않으면 계속 타고 내려가야 합니다.
+                if(!순회용현재노드.left){ // 비어있는상태 !null = true
+                    순회용현재노드.left = 새로운노드
+                    this.length += 1
+                    return
+                }
+                순회용현재노드 = 순회용현재노드.left // 하나 insert되면 비교해서 진행된다.
+            } else if (data > 순회용현재노드.data){
+                // 들어온 데이터가 큰 경우 오른쪽에 붙여야 합니다!
+                // 해당 데이터 부분이 비어있으면 데이터를 넣고, 비어있지 않으면 계속 타고 내려가야 합니다.
+                if(!순회용현재노드.right){
+                    순회용현재노드.right = 새로운노드
+                    this.length += 1
+                    return
+                }
+                순회용현재노드 = 순회용현재노드.right
+            }
+        }
+    }
+
+    //깊스너큐
+    DFS(){
+        // 깊이우선탐색, DFS(Depth First Search)
+        // Stack 이용!
+        let 방문경로 = []
+        let 스택 = [this.root]
+
+        while(스택.length !== 0){
+            let current = 스택.pop()
+            if(current.right){
+                스택.push(current.right)
+            }
+            if(current.left){
+                스택.push(current.left)
+            }
+            방문경로.push(current.data)
+        }
+        return 방문경로
+    }
+
+    BFS(){
+        // 너비우선탐색, BFS(Breadth First Search)
+        // Queue 이용!
+        let 방문경로 = []
+        let 큐 = [this.root]
+
+        while(큐.length !== 0){
+            let current = 큐.shift()
+            if (current.right){
+                큐.push(current.right)
+            }
+            if (current.left){
+                큐.push(current.left)
+            }
+            방문경로.push(current.data)
+        }
+
+        return 방문경로
+    }
+}
+
+let t = new Tree(5)
+t.insert(3) // 방문경로 = 5 -> current.right값이 8 / current.left값이 3
+t.insert(8)
+t.insert(1)
+t.insert(4)
+t.insert(6)
+t.insert(9)
+
+t.DFS()
+t.BFS()
+```
 
 ### 1.4.4 정렬 알고리즘
 -   재미있는 사실
@@ -1533,7 +1808,7 @@ x.toString(2).replace(/1/g, '#').replace(/0/g, ' ')
 '1001'.padStart(10. '0');
 ```
 
-### 2.1.1 다트 게임(18년도)
+### 2.1.2 다트 게임(18년도)
 -   https://school.programmers.co.kr/learn/courses/30/lessons/17682
 -   문자열 파싱(Parsing)
     -   3번의 기회
@@ -1655,7 +1930,7 @@ function solution(dartResult) {
 }
 ```
 
-### 2.1.1 캐시(18년도)
+### 2.1.3 캐시(18년도)
 -   https://school.programmers.co.kr/learn/courses/30/lessons/17682
 -   페이지 교체 알고리즘 : 메모리에 누적되어있는 데이터를 어떻게 처리할 것인가.
     -   LRU(Least Recently Used)
@@ -1746,4 +2021,238 @@ function solution(cacheSize, cities) {
     }
     return time;
 }
+```
+
+### 2.1.4 오픈채팅방(19년)
+-   https://tech.kakao.com/2018/09/21/kakao-blind-recruitment-for2019-round-1/
+-   링크 :  https://school.programmers.co.kr/learn/courses/30/lessons/42888?language=javascript
+-   입력레코드 :
+```js
+[
+    "Enter uid1234 Muzi",
+    "Enter uid4567 Prodo",
+    "Leave uid1234",
+    "Enter uid1234 Prodo",
+    "Change uid4567 Ryan",
+];
+```
+
+-   풀이를 위한 기본 문법
+```js
+let test = [
+    'A 10 !',
+    'B 20 !',
+    'A 22',
+    'B 20 @',
+    'A 21 @'
+]
+
+test.forEach(s => console.log(s))
+
+test.forEach(s => {
+    console.log(s)
+    console.log(s.split(' '))
+    console.log('------------')
+})
+
+test.forEach(s => {
+    console.log(s)
+    const [a, b, c] = s.split(' ')
+    console.log(a, b, c)
+    console.log('------------')
+})
+```
+
+-   문제풀이
+```js
+// 풀이 방식
+["Enter uid1234 Muzi", "Enter uid4567 Prodo","Leave uid1234","Enter uid1234 Prodo","Change uid4567 Ryan"]
+
+['uid1234', '님이 들어왔습니다.']
+['uid4567', '님이 들어왔습니다.']
+['uid1234', '님이 나갔습니다.']
+['uid1234', '님이 들어왔습니다.']
+
+["Prodo님이 들어왔습니다.",
+    "Ryan님이 들어왔습니다.",
+    "Prodo님이 나갔습니다.",
+    "Prodo님이 들어왔습니다."]
+```
+
+* step 1
+```js
+let record = [
+    "Enter uid1234 Muzi",
+    "Enter uid4567 Prodo",
+    "Leave uid1234",
+    "Enter uid1234 Prodo",
+    "Change uid4567 Ryan",
+];
+
+function solution(record){
+    let answer = []
+    let user = {}
+    for (const i of record){
+        const [상태, 아이디, 닉네임] = i.split(' ')
+    }
+    return answer
+}
+solution(record)
+```
+
+* step 2
+```js
+let record = [
+    "Enter uid1234 Muzi",
+    "Enter uid4567 Prodo",
+    "Leave uid1234",
+    "Enter uid1234 Prodo",
+    "Change uid4567 Ryan",
+];
+function solution(record){
+    let answer = []
+    let 유저정보 = {}
+    for (const i of record){
+        const [상태, 아이디, 닉네임] = i.split(' ')
+        // answer.push([상태, 아이디, 닉네임])
+        if (상태 === 'Enter'){
+            유저정보[아이디] = 닉네임
+            answer.push([아이디, '님이 들어왔습니다.'])
+        } else if (상태 === 'Leave'){
+            answer.push([아이디, '님이 나갔습니다.'])
+        } else if (상태 === 'Change'){
+            유저정보[아이디] = 닉네임
+        }
+    }
+    // console.log(유저정보) // {uid1234: 'Prodo', uid4567: 'Ryan'}
+    answer = answer.map(item => 유저정보[item[0]] + item[1])
+    return answer
+}
+solution(record)
+```
+
+### 2.1.5 오픈채팅방(19년)
+-   링크 : https://school.programmers.co.kr/learn/courses/30/lessons/42889
+-   입력레코드 :
+    -   스테이지에 도달했으나 아직 클리어하지 못한 플레이어의 수 / 스테이지에 도달한 플레이어
+    -   실패율 === 아직 클리어 못한 플레이어의 수 / 도달한 플레이어 수
+    -   전체 스테이지의 개수 N
+    -   스테이지의 번호가 담긴 배열 stages가 매개
+    -   실패율이 높은 스테이지부터 내림차순으로 스테이지의 번호가 담겨있는 배열을 return 하도록 solution 함수
+    -   만약 실패율이 같은 스테이지가 있다면 작은 번호의 스테이지가 먼저 오도록 하면 된다. (오름차순)
+
+```js
+// N    stages                      result
+// 5    [2, 1, 2, 6, 2, 4, 3, 3]    [3, 4, 2, 1, 5]
+// 4    [4, 4, 4, 4, 4]                [4, 1, 2, 3]
+
+// 스테이지에 도달한 사람의 수
+// 1stage === 1
+// 2stage === 3
+// 3stage === 2
+// 4stage === 1
+// 5stage === 0
+
+// 실패율
+// 1stage === 1/8
+// 2stage === 3/7 === 3/(8-1)
+// 3stage === 2/4 === 2/(7-3)
+// 4stage === 1/2 === 1/(4-2)
+// 5stage === 0/1 === 0/(2-1)
+
+// [2, 1, 2, 6, 2, 4, 3, 3].filter((user) => user === 3);
+// (2) [3, 3]
+```
+
+* 문제 풀이를 위한 기본 메서드
+```js
+[2, 1, 2, 6, 2, 4, 3, 3].filter((user) => user === 3)
+// (2) [3, 3]
+[2, 1, 2, 6, 2, 4, 3, 3].filter((user) => user === 3).length
+// 2
+```
+
+* step 1 스테이지에 머물고 있는 사람 리스트
+```js
+function solution(N, stages) {
+    let 실패율 = []
+    let 유저수 = stages.length
+
+    for(let i = 1; i < N; i++){
+        let 도달한사람수 = stages.filter((user) => user === i)
+        실패율.push(도달한사람수)
+    }
+    return 실패율; // (4) [Array(1), Array(3), Array(2), Array(1)]
+}
+solution(5, [2, 1, 2, 6, 2, 4, 3, 3])
+```
+
+* step 2 실패율
+```js
+function solution(N, stages) {
+    let 실패율 = []
+    let 유저수 = stages.length
+
+    for(let i = 1; i < N; i++){
+        let 도달한사람수 = stages.filter((user) => user === i).length
+        실패율.push(도달한사람수 / 유저수)
+        유저수 -= 도달한사람수
+        console.log(유저수, 도달한사람수)
+    }
+    return 실패율; // (4) [0.125, 0.42857142857142855, 0.5, 0.5]
+}
+solution(5, [2, 1, 2, 6, 2, 4, 3, 3])
+```
+
+* step 3 정렬
+```js
+function solution(N, stages) {
+    let 실패율 = []
+    let 유저수 = stages.length
+
+    for(let i = 1; i <= N; i++){
+        let 도달한사람수 = stages.filter((user) => user === i).length
+        let 확률 = 도달한사람수 / 유저수
+        실패율.push({스테이지 : i, 확률})
+        유저수 -= 도달한사람수
+        console.log(유저수, 도달한사람수)
+    }
+    // 정렬 기준 확인 필요
+    실패율.sort((a, b) => {
+        if(a.확률 < b.확률) return 1;
+        if(a.확률 > b.확률) return -1;
+        if(a.확률=== b.확률) return 0;
+    })
+    return 실패율;
+    // 0: {스테이지: 3, 확률: 0.5}
+    // 1: {스테이지: 4, 확률: 0.5}
+    // 2: {스테이지: 2, 확률: 0.42857142857142855}
+    // 3: {스테이지: 1, 확률: 0.125}
+    // 4: {스테이지: 5, 확률: 0}
+}
+solution(5, [2, 1, 2, 6, 2, 4, 3, 3])
+```
+
+* step 4 스테이지만 출력
+```js
+function solution(N, stages) {
+    let 실패율 = []
+    let 유저수 = stages.length
+
+    for(let i = 1; i <= N; i++){
+        let 도달한사람수 = stages.filter((user) => user === i).length
+        let 확률 = 도달한사람수 / 유저수
+        실패율.push({스테이지 : i, 확률})
+        유저수 -= 도달한사람수
+        console.log(유저수, 도달한사람수)
+    }
+    // 정렬 기준 확인 필요
+    실패율.sort((a, b) => {
+        if(a.확률 < b.확률) return 1;
+        if(a.확률 > b.확률) return -1;
+        if(a.확률=== b.확률) return 0;
+    })
+    return 실패율.map(object => object.스테이지); // (5) [3, 4, 2, 1, 5]
+}
+solution(5, [2, 1, 2, 6, 2, 4, 3, 3])
 ```
